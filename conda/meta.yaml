@@ -11,7 +11,7 @@ source:
    - gui_patch.patch
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
@@ -19,14 +19,14 @@ requirements:
    - cmake  # [win]
    - boost 1.55.0
    - jpeg 8d
-   - libpng 1.2.50
+   - libpng 1.5.13
    - sqlite 3.8.4.1
 
   run:
    - python
    - boost 1.55.0
    - jpeg 8d
-   - libpng 1.2.50
+   - libpng 1.5.13
    - sqlite 3.8.4.1
 
 test:
