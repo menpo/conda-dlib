@@ -20,14 +20,14 @@ requirements:
    - boost 1.55.0
    - jpeg 8d
    - libpng 1.5.13
-   - sqlite 3.8.4.1
+   - sqlite 3.8.4.1  # [unix]
 
   run:
    - python
    - boost 1.55.0
    - jpeg 8d
    - libpng 1.5.13
-   - sqlite 3.8.4.1
+   - sqlite 3.8.4.1  # [unix]
 
 test:
   imports:
