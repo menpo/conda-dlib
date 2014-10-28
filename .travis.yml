@@ -3,7 +3,8 @@ env:
     - BINSTAR_USER: menpo
   matrix:
     - PYTHON_VERSION: 2.7
-    - PYTHON_VERSION: 3.4
+    allow_failures:
+      - PYTHON_VERSION: 3.4
 
 install:
 - wget https://raw.githubusercontent.com/jabooth/condaci/v0.2.0/condaci.py -O condaci.py
