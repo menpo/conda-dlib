@@ -7,7 +7,8 @@ environment:
       secure: mw1Fz5a5C0lT4CXzsOCADoo/Xa9YymZI3yjVZNR8f5GwYrVAOC2YXxyEG6NaSWZY
   matrix:
     - PYTHON_VERSION: 2.7
-    - PYTHON_VERSION: 3.4
+    allow_failures:
+      - PYTHON_VERSION: 3.4
 
 platform:
 - x86
