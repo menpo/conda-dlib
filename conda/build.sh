@@ -14,6 +14,12 @@ if [ "$(uname -s)" == "Darwin" ]; then
   DYNAMIC_EXT="dylib"
 fi
 
+if [ $PY3K -eq 1 ]; then
+  export PY_STR="${PY_VER}m"
+else
+  export PY_STR="${PY_VER}"
+fi
+
 export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 
 cmake ../tools/python -G"$CMAKE_GENERATOR" \
@@ -23,8 +29,8 @@ cmake ../tools/python -G"$CMAKE_GENERATOR" \
 -DBoost_USE_STATIC_RUNTIME=0 \
 -DBOOST_INCLUDEDIR=$PREFIX/include \
 -DBOOST_LIBRARYDIR=$PREFIX/lib \
--DPYTHON_LIBRARY=$PREFIX/lib/libpython$PY_VER.$DYNAMIC_EXT \
--DPYTHON_INCLUDE_DIR=$PREFIX/include/python$PY_VER \
+-DPYTHON_LIBRARY=$PREFIX/lib/libpython$PY_STR.$DYNAMIC_EXT \
+-DPYTHON_INCLUDE_DIR=$PREFIX/include/python$PY_STR \
 -DDLIB_NO_GUI_SUPPORT=1 \
 -DDLIB_USE_BLAS=0 \
 -DDLIB_USE_LAPACK=0
