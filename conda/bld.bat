@@ -15,15 +15,21 @@ if %ARCH%==64 (
   )
 )
 
+rem The Python lib has no period in the
+rem version string, so we remove it here.
+set PY_VER_NO_DOT=%PY_VER:.=%
+
 cmake ..\tools\python ^
--DCMAKE_PREFIX_PATH="%PREFIX%" ^
+-DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
 -DBUILD_SHARED_LIBS=1 ^
 -DBoost_USE_STATIC_LIBS=0 ^
 -DBoost_USE_STATIC_RUNTIME=0 ^
 -DBOOST_INCLUDEDIR="%LIBRARY_INC%" ^
 -DBOOST_LIBRARYDIR="%LIBRARY_LIB%" ^
--DPYTHON_LIBRARY="%PREFIX%\libs\python%PY_VER%.lib" ^
--DPYTHON_INCLUDE_DIR="%PREFIX%\include\python%PY_VER%" ^
+-DPYTHON_LIBRARY="%PREFIX%\libs\python%PY_VER_NO_DOT%.lib" ^
+-DPYTHON_INCLUDE_DIR="%PREFIX%\include" ^
+-DJPEG_LIBRARY="%LIBRARY_LIB%\libjpeg.lib" ^
+-DJPEG_INCLUDE_DIR="%LIBRARY_INC%" ^
 -DDLIB_NO_GUI_SUPPORT=1 ^
 -DDLIB_USE_BLAS=0 ^
 -DDLIB_USE_LAPACK=0
@@ -31,4 +37,8 @@ cmake ..\tools\python ^
 cmake --build . --config %CMAKE_CONFIG% --target ALL_BUILD
 cmake --build . --config %CMAKE_CONFIG% --target INSTALL
 
-move dlib.dll "%SP_DIR%"
+rem Copy the dlib libraries and the dlls it depends upon
+rem Unfortunately, they have to be put in the root.
+move "..\python_examples\*.dll" "%SP_DIR%"
+move "..\python_examples\dlib.lib" "%SP_DIR%"
+move "..\python_examples\dlib.pyd" "%SP_DIR%"
