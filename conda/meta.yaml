@@ -1,30 +1,30 @@
 package:
   name: dlib
-  version: "18.10"
+  version: "18.11"
 
 source:
-  fn: dlib-18.10.tar.bz2
-  url: http://sourceforge.net/projects/dclib/files/dlib/v18.10/dlib-18.10.tar.bz2/download
-  sha1: 8010cd5c173277d7327135f75f3565d15491592e
+  fn: dlib-18.11.tar.bz2
+  url: http://sourceforge.net/projects/dclib/files/dlib/v18.11/dlib-18.11.tar.bz2/download
+  sha1: 628eeaad8b0640150898ea0e82a53236bac93aed
   
   patches:
    - gui_patch.patch
 
 build:
-  number: 4
+  number: 0
 
 requirements:
   build:
    - python
    - cmake  # [win]
-   - boost 1.55.0
+   - boost 1.56.0
    - jpeg 8d
    - libpng 1.5.13
    - sqlite 3.8.4.1  # [unix]
 
   run:
    - python
-   - boost 1.55.0
+   - boost 1.56.0
    - jpeg 8d
    - libpng 1.5.13
    - sqlite 3.8.4.1  # [unix]
