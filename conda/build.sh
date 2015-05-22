@@ -21,6 +21,15 @@ else
   export PY_STR="${PY_VER}"
 fi
 
+# Make the probably sensible assumption that a 64-bit
+# machine supports SSE4 instructions - if this becomes
+# a problem we should turn this off
+if [ $ARCH -eq 64 ]; then
+  USE_SSE4=1
+else
+  USE_SSE4=0
+fi
+
 export LDFLAGS="-L${LIBRARY_PATH} $LDFLAGS"
 
 cmake ../tools/python \
@@ -32,12 +41,17 @@ cmake ../tools/python \
 -DBOOST_LIBRARYDIR="${LIBRARY_PATH}" \
 -DPYTHON_LIBRARY="${LIBRARY_PATH}/libpython$PY_STR.$DYNAMIC_EXT" \
 -DPYTHON_INCLUDE_DIR="${INCLUDE_PATH}/python$PY_STR" \
+-DDLIB_LINK_WITH_LIBPNG=0 \
+-DDLIB_LINK_WITH_LIBJPEG=0 \
+-DDLIB_LINK_WITH_SQLITE3=1 \
 -DDLIB_NO_GUI_SUPPORT=1 \
+-DUSE_SSE2_INSTRUCTIONS=1 \
+-DUSE_SSE4_INSTRUCTIONS=$USE_SSE4 \
 -DDLIB_USE_BLAS=0 \
 -DDLIB_USE_LAPACK=0 ${EXTRA_FLAGS}
 # Above should be changed when the MKL features problem is solved
 
-cmake --build . --config Release --target install
+cmake --build . --config Release --target install -- -j${CPU_COUNT}
 
 cp dlib.so $SP_DIR
 
