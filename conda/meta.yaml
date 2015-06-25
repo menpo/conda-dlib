@@ -1,14 +1,11 @@
 package:
   name: dlib
-  version: "18.15"
+  version: "18.16"
 
 source:
-  fn: dlib-18.15.tar.bz2
-  url: http://sourceforge.net/projects/dclib/files/dlib/v18.15/dlib-18.15.tar.bz2/download
-  sha1: d2b5f25116d62290f85e41b6cbebb0b1e7acffb2
-
-build:
-  number: 1
+  fn: dlib-18.16.tar.bz2
+  url: http://sourceforge.net/projects/dclib/files/dlib/v18.16/dlib-18.16.tar.bz2/download
+  sha1: 6b4944ea3638e896016f3cbb286da9c1faa4d588
 
 requirements:
   build:
@@ -23,6 +20,9 @@ requirements:
    - sqlite 3.8.4.1  # [unix]
 
 test:
+  requires:
+    - scipy
+
   imports:
     - dlib
 

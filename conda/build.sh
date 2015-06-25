@@ -30,6 +30,8 @@ else
   USE_SSE4=0
 fi
 
+INCLUDE_PATH=${PREFIX}/include
+LIBRARY_PATH=${PREFIX}/lib
 export LDFLAGS="-L${LIBRARY_PATH} $LDFLAGS"
 
 cmake ../tools/python \
@@ -49,7 +51,7 @@ cmake ../tools/python \
 -DUSE_SSE4_INSTRUCTIONS=$USE_SSE4 \
 -DDLIB_USE_BLAS=0 \
 -DDLIB_USE_LAPACK=0 ${EXTRA_FLAGS}
-# Above should be changed when the MKL features problem is solved
+# Use the conda build in the mkl folder for BLAS
 
 cmake --build . --config Release --target install -- -j${CPU_COUNT}
 
