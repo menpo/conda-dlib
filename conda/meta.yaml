@@ -7,16 +7,25 @@ source:
   url: http://sourceforge.net/projects/dclib/files/dlib/v18.16/dlib-18.16.tar.bz2/download
   sha1: 6b4944ea3638e896016f3cbb286da9c1faa4d588
 
+build:
+  number: 1
+
 requirements:
   build:
    - python
-   - cmake  # [win]
+   - cmake 3.3.0  # [not osx]
    - boost 1.56.0
+   # On OSX Davis has forced building the static version
+   # On Windows there is a conflict between this jpeg and windows.h
+   - jpeg 8d  # [linux]
+   - libpng 1.6.17
    - sqlite 3.8.4.1  # [unix]
 
   run:
    - python
    - boost 1.56.0
+   - jpeg 8d  # [linux]
+   - libpng 1.6.17
    - sqlite 3.8.4.1  # [unix]
 
 test:
