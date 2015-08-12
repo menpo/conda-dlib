@@ -3,14 +3,18 @@ mkdir build
 cd build
 
 CMAKE_ARCH="-m"$ARCH
+INCLUDE_PATH=${PREFIX}/include
+LIBRARY_PATH=${PREFIX}/lib
 
 if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   export CFLAGS="$CFLAGS -fPIC $CMAKE_ARCH"
   export LDFLAGS="$LDFLAGS $CMAKE_ARCH"
   DYNAMIC_EXT="so"
   EXTRA_FLAGS=""
+  DLIB_JPEG="-DJPEG_INCLUDE_DIR=${INCLUDE_PATH} -DJPEG_LIBRARY=${LIBRARY_PATH}/libjpeg.${DYNAMIC_EXT}"
 fi
 if [ "$(uname -s)" == "Darwin" ]; then
+  DLIB_JPEG=""
   DYNAMIC_EXT="dylib"
   EXTRA_FLAGS="-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}"
 fi
@@ -23,15 +27,13 @@ fi
 
 # Make the probably sensible assumption that a 64-bit
 # machine supports SSE4 instructions - if this becomes
-# a problem we should turn this off
+# a problem we should turn this off.
 if [ $ARCH -eq 64 ]; then
   USE_SSE4=1
 else
   USE_SSE4=0
 fi
 
-INCLUDE_PATH=${PREFIX}/include
-LIBRARY_PATH=${PREFIX}/lib
 export LDFLAGS="-L${LIBRARY_PATH} $LDFLAGS"
 
 cmake -LAH ../tools/python \
@@ -45,8 +47,12 @@ cmake -LAH ../tools/python \
 -DPYTHON_LIBRARY="${LIBRARY_PATH}/libpython$PY_STR.$DYNAMIC_EXT" \
 -DPYTHON_INCLUDE_DIR="${INCLUDE_PATH}/python$PY_STR" \
 -DPYTHON3=$PY3K \
--DDLIB_LINK_WITH_LIBPNG=0 \
--DDLIB_LINK_WITH_LIBJPEG=0 \
+-DDLIB_LINK_WITH_LIBPNG=1 \
+-DPNG_INCLUDE_DIR="${INCLUDE_PATH}" \
+-DPNG_PNG_INCLUDE_DIR="${INCLUDE_PATH}" \
+-DPNG_LIBRARY="${LIBRARY_PATH}/libpng.${DYNAMIC_EXT}" \
+-DDLIB_LINK_WITH_LIBJPEG=1 \
+${DLIB_JPEG} \
 -DDLIB_LINK_WITH_SQLITE3=1 \
 -DDLIB_NO_GUI_SUPPORT=1 \
 -DUSE_SSE2_INSTRUCTIONS=1 \
@@ -55,7 +61,12 @@ cmake -LAH ../tools/python \
 -DDLIB_USE_LAPACK=0 ${EXTRA_FLAGS}
 # Use the conda build in the mkl folder for BLAS
 
-cmake --build . --config Release --target install -- -j${CPU_COUNT}
+# On Travis, due to the heavy template expansion, we need
+# to limit the number of cores (and thus the memory
+# usage) else we get a compiler error.
+CMAKE_CPU_COUNT=1
+
+cmake --build . --config Release --target install -- -j${CMAKE_CPU_COUNT}
 
 cp dlib.so $SP_DIR
 
