@@ -3,24 +3,20 @@
 mkdir build
 cd build
 
-rem Need to handle Python 3.x case at some point (Visual Studio 2010)
-if %ARCH%==32 (
-  set CMAKE_CONFIG="Release"
+set CMAKE_CONFIG="Release"
 
-  if %PY_VER% LSS 3 (
-	set GENERATOR="Visual Studio 9 2008"
-  ) else (
-	set GENERATOR="Visual Studio 10"
-  )
+if "%PY_VER%" == "3.4" (
+    set GENERATOR="Visual Studio 10"
+) else (
+    if "%PY_VER%" == "3.5" (
+        set GENERATOR="Visual Studio 14"
+    ) else (
+        set GENERATOR="Visual Studio 9 2008"
+    )
 )
-if %ARCH%==64 (
-  set CMAKE_CONFIG="Release"
 
-  if %PY_VER% LSS 3 (
-	set GENERATOR="Visual Studio 9 2008 Win64"
-  ) else (
-	set GENERATOR="Visual Studio 10 Win64"
-  )
+if %ARCH% EQU 64 (
+    set GENERATOR="%GENERATOR% Win64"
 )
 
 set CMAKE_COMMAND="%LIBRARY_BIN%\bin\cmake.exe"
@@ -35,6 +31,7 @@ set PY_VER_NO_DOT=%PY_VER:.=%
 -DBUILD_SHARED_LIBS=1 ^
 -DBoost_USE_STATIC_LIBS=0 ^
 -DBoost_USE_STATIC_RUNTIME=0 ^
+-DBOOST_ROOT="%LIBRARY_PREFIX%" ^
 -DBOOST_INCLUDEDIR="%LIBRARY_INC%" ^
 -DBOOST_LIBRARYDIR="%LIBRARY_LIB%" ^
 -DPYTHON3=%PY3K% ^
@@ -53,8 +50,10 @@ set PY_VER_NO_DOT=%PY_VER:.=%
 %CMAKE_COMMAND% --build . --config %CMAKE_CONFIG% --target INSTALL
 
 rem Copy the dlib libraries and the dlls it depends upon
-rem Unfortunately, they have to be put in the root.
-cp "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\libpng16.dll"
-move "..\python_examples\*.dll" "%SP_DIR%"
-move "..\python_examples\dlib.lib" "%SP_DIR%"
-move "..\python_examples\dlib.pyd" "%SP_DIR%"
+rem MAke a dummy folder to expose dlib in
+mkdir "%SP_DIR%\dlib"
+copy "%RECIPE_DIR%\__init__.py" "%SP_DIR%\dlib\__init__.py"
+copy "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\dlib\libpng16.dll"
+copy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%\dlib\zlib.dll"
+robocopy "%LIBRARY_LIB%" "%SP_DIR%\dlib" /E boost_python*.dll
+move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib\dlib.pyd"
