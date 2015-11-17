@@ -32,15 +32,16 @@ set PY_VER_NO_DOT=%PY_VER:.=%
 -DBUILD_SHARED_LIBS=1 ^
 -DBoost_USE_STATIC_LIBS=0 ^
 -DBoost_USE_STATIC_RUNTIME=0 ^
--DBOOST_ROOT="%LIBRARY_PREFIX%" ^
 -DBOOST_INCLUDEDIR="%LIBRARY_INC%" ^
 -DBOOST_LIBRARYDIR="%LIBRARY_LIB%" ^
 -DPYTHON3=%PY3K% ^
 -DPYTHON_LIBRARY="%PREFIX%\libs\python%PY_VER_NO_DOT%.lib" ^
 -DPYTHON_INCLUDE_DIR="%PREFIX%\include" ^
 -DDLIB_LINK_WITH_SQLITE3=0 ^
+-DDLIB_LINK_WITH_LIBPNG=1 ^
 -DPNG_INCLUDE_DIR="%LIBRARY_INC%" ^
 -DPNG_PNG_INCLUDE_DIR="%LIBRARY_INC%" ^
+-DDLIB_LINK_WITH_LIBJPEG=1 ^
 -DDLIB_NO_GUI_SUPPORT=1 ^
 -DDLIB_USE_BLAS=0 ^
 -DDLIB_USE_LAPACK=0
@@ -49,10 +50,8 @@ set PY_VER_NO_DOT=%PY_VER:.=%
 %CMAKE_COMMAND% --build . --config %CMAKE_CONFIG% --target INSTALL
 
 rem Copy the dlib libraries and the dlls it depends upon
-rem MAke a dummy folder to expose dlib in
-mkdir "%SP_DIR%\dlib"
-copy "%RECIPE_DIR%\__init__.py" "%SP_DIR%\dlib\__init__.py"
-copy "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\dlib\libpng16.dll"
-copy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%\dlib\zlib.dll"
-robocopy "%LIBRARY_LIB%" "%SP_DIR%\dlib" /E boost_python*.dll
-move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib\dlib.pyd"
+rem Unfortunately, they have to be put in the root.
+copy "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\libpng16.dll"
+copy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%\zlib.dll"
+robocopy "%LIBRARY_LIB%" "%SP_DIR%" /E boost_python*.dll
+move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib.pyd"
