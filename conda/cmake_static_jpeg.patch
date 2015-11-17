@@ -1,0 +1,120 @@
+--- dlib/CMakeLists.txt
++++ dlib/CMakeLists.txt
+@@ -270,68 +270,54 @@
+       endif()
+ 
+       if (DLIB_LINK_WITH_LIBJPEG)
+-         # try to find libjpeg 
+-         find_package(JPEG QUIET)
+-         # Make sure there isn't something wrong with the version of libjpeg 
+-         # installed on this system.  Also don't use the installed libjpeg
+-         # if this is an APPLE system because apparently it's broken (as of 2015/01/01).
+-         if (JPEG_FOUND)
+-            set(CMAKE_REQUIRED_LIBRARIES ${JPEG_LIBRARY})
+-            CHECK_FUNCTION_EXISTS(jpeg_read_header LIBJPEG_IS_GOOD)
+-         endif()
+-         if (JPEG_FOUND AND LIBJPEG_IS_GOOD AND NOT APPLE)
+-            include_directories(${JPEG_INCLUDE_DIR})
+-            set (dlib_needed_libraries ${dlib_needed_libraries} ${JPEG_LIBRARY})
+-         else()
+-            # If we can't find libjpeg then statically compile it in.
+-            add_definitions(-DDLIB_JPEG_STATIC)
+-            set(source_files ${source_files}
+-                  external/libjpeg/jcomapi.cpp
+-                  external/libjpeg/jdapimin.cpp
+-                  external/libjpeg/jdapistd.cpp
+-                  external/libjpeg/jdatasrc.cpp
+-                  external/libjpeg/jdcoefct.cpp
+-                  external/libjpeg/jdcolor.cpp
+-                  external/libjpeg/jddctmgr.cpp
+-                  external/libjpeg/jdhuff.cpp
+-                  external/libjpeg/jdinput.cpp
+-                  external/libjpeg/jdmainct.cpp
+-                  external/libjpeg/jdmarker.cpp
+-                  external/libjpeg/jdmaster.cpp
+-                  external/libjpeg/jdmerge.cpp
+-                  external/libjpeg/jdphuff.cpp
+-                  external/libjpeg/jdpostct.cpp
+-                  external/libjpeg/jdsample.cpp
+-                  external/libjpeg/jerror.cpp
+-                  external/libjpeg/jidctflt.cpp
+-                  external/libjpeg/jidctfst.cpp
+-                  external/libjpeg/jidctint.cpp
+-                  external/libjpeg/jidctred.cpp
+-                  external/libjpeg/jmemmgr.cpp
+-                  external/libjpeg/jmemnobs.cpp
+-                  external/libjpeg/jquant1.cpp
+-                  external/libjpeg/jquant2.cpp
+-                  external/libjpeg/jutils.cpp  
+-                  external/libjpeg/jcapimin.cpp
+-                  external/libjpeg/jdatadst.cpp
+-                  external/libjpeg/jcparam.cpp
+-                  external/libjpeg/jcapistd.cpp
+-                  external/libjpeg/jcmarker.cpp
+-                  external/libjpeg/jcinit.cpp
+-                  external/libjpeg/jcmaster.cpp
+-                  external/libjpeg/jcdctmgr.cpp
+-                  external/libjpeg/jccoefct.cpp  
+-                  external/libjpeg/jccolor.cpp  
+-                  external/libjpeg/jchuff.cpp  
+-                  external/libjpeg/jcmainct.cpp  
+-                  external/libjpeg/jcphuff.cpp  
+-                  external/libjpeg/jcprepct.cpp  
+-                  external/libjpeg/jcsample.cpp
+-                  external/libjpeg/jfdctint.cpp
+-                  external/libjpeg/jfdctflt.cpp
+-                  external/libjpeg/jfdctfst.cpp
+-                  )
+-         endif()
++        # If we can't find libjpeg then statically compile it in.
++        add_definitions(-DDLIB_JPEG_STATIC)
++        set(source_files ${source_files}
++              external/libjpeg/jcomapi.cpp
++              external/libjpeg/jdapimin.cpp
++              external/libjpeg/jdapistd.cpp
++              external/libjpeg/jdatasrc.cpp
++              external/libjpeg/jdcoefct.cpp
++              external/libjpeg/jdcolor.cpp
++              external/libjpeg/jddctmgr.cpp
++              external/libjpeg/jdhuff.cpp
++              external/libjpeg/jdinput.cpp
++              external/libjpeg/jdmainct.cpp
++              external/libjpeg/jdmarker.cpp
++              external/libjpeg/jdmaster.cpp
++              external/libjpeg/jdmerge.cpp
++              external/libjpeg/jdphuff.cpp
++              external/libjpeg/jdpostct.cpp
++              external/libjpeg/jdsample.cpp
++              external/libjpeg/jerror.cpp
++              external/libjpeg/jidctflt.cpp
++              external/libjpeg/jidctfst.cpp
++              external/libjpeg/jidctint.cpp
++              external/libjpeg/jidctred.cpp
++              external/libjpeg/jmemmgr.cpp
++              external/libjpeg/jmemnobs.cpp
++              external/libjpeg/jquant1.cpp
++              external/libjpeg/jquant2.cpp
++              external/libjpeg/jutils.cpp  
++              external/libjpeg/jcapimin.cpp
++              external/libjpeg/jdatadst.cpp
++              external/libjpeg/jcparam.cpp
++              external/libjpeg/jcapistd.cpp
++              external/libjpeg/jcmarker.cpp
++              external/libjpeg/jcinit.cpp
++              external/libjpeg/jcmaster.cpp
++              external/libjpeg/jcdctmgr.cpp
++              external/libjpeg/jccoefct.cpp  
++              external/libjpeg/jccolor.cpp  
++              external/libjpeg/jchuff.cpp  
++              external/libjpeg/jcmainct.cpp  
++              external/libjpeg/jcphuff.cpp  
++              external/libjpeg/jcprepct.cpp  
++              external/libjpeg/jcsample.cpp
++              external/libjpeg/jfdctint.cpp
++              external/libjpeg/jfdctflt.cpp
++              external/libjpeg/jfdctfst.cpp
++              )
+          set(source_files ${source_files}
+             image_loader/jpeg_loader.cpp
+             image_saver/save_jpeg.cpp
+
