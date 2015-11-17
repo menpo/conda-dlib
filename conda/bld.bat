@@ -51,7 +51,7 @@ set PY_VER_NO_DOT=%PY_VER:.=%
 
 rem Copy the dlib libraries and the dlls it depends upon
 rem Unfortunately, they have to be put in the root.
-copy "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\dlib\libpng16.dll"
-copy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%\dlib\zlib.dll"
-robocopy "%LIBRARY_LIB%" "%SP_DIR%\dlib" /E boost_python*.dll
-move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib\dlib.pyd"
+copy "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\libpng16.dll"
+copy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%\zlib.dll"
+robocopy "%LIBRARY_LIB%" "%SP_DIR%" /E boost_python*.dll
+move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib.pyd"
