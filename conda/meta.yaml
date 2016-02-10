@@ -16,7 +16,8 @@ build:
 requirements:
   build:
    - python
-   - boost 1.56.0
+   - cmake
+   - boost 1.59.*
    # On OSX Davis has forced building the static version
    # On Windows there is a conflict between this jpeg and windows.h
    - jpeg 8d  # [linux]
@@ -25,7 +26,7 @@ requirements:
 
   run:
    - python
-   - boost 1.56.0
+   - boost 1.59.*
    - jpeg 8d  # [linux]
    - libpng 1.6.17
    - sqlite 3.8.4.1  # [unix]

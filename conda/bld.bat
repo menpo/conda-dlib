@@ -20,14 +20,11 @@ if %ARCH% EQU 64 (
     set GENERATOR=%GENERATOR% Win64
 )
 
-set CMAKE_COMMAND="%LIBRARY_BIN%\bin\cmake.exe"
-set CMAKE_ROOT="%LIBRARY_BIN%\share\cmake-3.3"
-
 rem The Python lib has no period in the
 rem version string, so we remove it here.
 set PY_VER_NO_DOT=%PY_VER:.=%
 
-%CMAKE_COMMAND% ..\tools\python -LAH -G"%GENERATOR%" ^
+cmake ..\tools\python -LAH -G"%GENERATOR%" ^
 -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
 -DBUILD_SHARED_LIBS=1 ^
 -DBoost_USE_STATIC_LIBS=0 ^
@@ -45,14 +42,9 @@ set PY_VER_NO_DOT=%PY_VER:.=%
 -DDLIB_USE_BLAS=0 ^
 -DDLIB_USE_LAPACK=0
 
-%CMAKE_COMMAND% --build . --config %CMAKE_CONFIG% --target ALL_BUILD
-%CMAKE_COMMAND% --build . --config %CMAKE_CONFIG% --target INSTALL
+cmake --build . --config %CMAKE_CONFIG% --target ALL_BUILD
+cmake --build . --config %CMAKE_CONFIG% --target INSTALL
 
 rem Copy the dlib libraries and the dlls it depends upon
 rem MAke a dummy folder to expose dlib in
-mkdir "%SP_DIR%\dlib"
-copy "%RECIPE_DIR%\__init__.py" "%SP_DIR%\dlib\__init__.py"
-copy "%LIBRARY_BIN%\libpng16.dll" "%SP_DIR%\dlib\libpng16.dll"
-copy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%\dlib\zlib.dll"
-robocopy "%LIBRARY_LIB%" "%SP_DIR%\dlib" /E boost_python*.dll
-move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib\dlib.pyd"
+move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib.pyd"
