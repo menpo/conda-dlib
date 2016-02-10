@@ -16,8 +16,7 @@ build:
 requirements:
   build:
    - python
-   - cmake 3.3.0  # [not osx]
-   - boost 1.59.*
+   - boost 1.56.0
    # On OSX Davis has forced building the static version
    # On Windows there is a conflict between this jpeg and windows.h
    - jpeg 8d  # [linux]
@@ -26,14 +25,15 @@ requirements:
 
   run:
    - python
-   - boost 1.59.*
+   - boost 1.56.0
    - jpeg 8d  # [linux]
    - libpng 1.6.17
    - sqlite 3.8.4.1  # [unix]
 
 test:
   requires:
-    - scipy
+    - numpy
+    - pillow
 
   imports:
     - dlib
