@@ -31,7 +31,7 @@ cmake ..\tools\python -LAH -G"%GENERATOR%" ^
 -DBoost_USE_STATIC_RUNTIME=0 ^
 -DBOOST_ROOT="%LIBRARY_PREFIX%" ^
 -DBOOST_INCLUDEDIR="%LIBRARY_INC%" ^
--DBOOST_LIBRARYDIR="%LIBRARY_LIB%" ^
+-DBOOST_LIBRARYDIR="%LIBRARY_BIN%" ^
 -DPYTHON3=%PY3K% ^
 -DPYTHON_LIBRARY="%PREFIX%\libs\python%PY_VER_NO_DOT%.lib" ^
 -DPYTHON_INCLUDE_DIR="%PREFIX%\include" ^
@@ -40,11 +40,11 @@ cmake ..\tools\python -LAH -G"%GENERATOR%" ^
 -DPNG_PNG_INCLUDE_DIR="%LIBRARY_INC%" ^
 -DDLIB_NO_GUI_SUPPORT=1 ^
 -DDLIB_USE_BLAS=0 ^
--DDLIB_USE_LAPACK=0
+-DDLIB_USE_LAPACK=0 ^
+-DUSE_SSE4_INSTRUCTIONS=0
 
 cmake --build . --config %CMAKE_CONFIG% --target ALL_BUILD
 cmake --build . --config %CMAKE_CONFIG% --target INSTALL
 
-rem Copy the dlib libraries and the dlls it depends upon
-rem MAke a dummy folder to expose dlib in
+rem Copy the dlib library to site packages
 move "..\python_examples\dlib.pyd" "%SP_DIR%\dlib.pyd"
