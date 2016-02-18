@@ -1,23 +1,23 @@
 package:
   name: dlib
-  version: "18.16"
+  version: "18.18"
 
 source:
-  fn: dlib-18.16.tar.bz2
-  url: http://sourceforge.net/projects/dclib/files/dlib/v18.16/dlib-18.16.tar.bz2/download
-  sha1: 6b4944ea3638e896016f3cbb286da9c1faa4d588
+  fn: dlib-18.18.tar.bz2
+  url: http://sourceforge.net/projects/dclib/files/dlib/v18.18/dlib-18.18.tar.bz2/download
+  sha1: 21421b55e22387dfa428a221653172bf740b55ed
   
   patches:
-    - cmake_static_jpeg.patch  # [win]
+    - cmake_static_boost.patch  # [win]
 
 build:
-  number: 3
+  number: 0
 
 requirements:
   build:
    - python
-   - cmake 3.3.0  # [not osx]
-   - boost 1.56.0
+   - cmake
+   - boost 1.59.*
    # On OSX Davis has forced building the static version
    # On Windows there is a conflict between this jpeg and windows.h
    - jpeg 8d  # [linux]
@@ -26,14 +26,15 @@ requirements:
 
   run:
    - python
-   - boost 1.56.0
+   - boost 1.59.*
    - jpeg 8d  # [linux]
    - libpng 1.6.17
    - sqlite 3.8.4.1  # [unix]
 
 test:
   requires:
-    - scipy
+    - numpy
+    - pillow
 
   imports:
     - dlib
