@@ -6,25 +6,11 @@ cd build
 
 set CMAKE_CONFIG="Release"
 
-if "%PY_VER%" == "3.4" (
-    set GENERATOR=Visual Studio 10 2010
-) else (
-    if "%PY_VER%" == "3.5" (
-        set GENERATOR=Visual Studio 14 2015
-    ) else (
-        set GENERATOR=Visual Studio 9 2008
-    )
-)
-
-if %ARCH% EQU 64 (
-    set GENERATOR=%GENERATOR% Win64
-)
-
 rem The Python lib has no period in the
 rem version string, so we remove it here.
 set PY_VER_NO_DOT=%PY_VER:.=%
 
-cmake ..\tools\python -LAH -G"%GENERATOR%" ^
+cmake ..\tools\python -LAH -G"NMake Makefiles" ^
 -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
 -DBUILD_SHARED_LIBS=1 ^
 -DBoost_USE_STATIC_LIBS=0 ^
@@ -43,7 +29,7 @@ cmake ..\tools\python -LAH -G"%GENERATOR%" ^
 -DDLIB_USE_LAPACK=0 ^
 -DUSE_SSE4_INSTRUCTIONS=0
 
-cmake --build . --config %CMAKE_CONFIG% --target ALL_BUILD
+cmake --build . --config %CMAKE_CONFIG%
 cmake --build . --config %CMAKE_CONFIG% --target INSTALL
 
 rem Copy the dlib library to site packages
