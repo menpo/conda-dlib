@@ -11,29 +11,30 @@ source:
     - cmake_static_boost.patch  # [win]
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
    - python
    - cmake
+   - numpy >=1.10
    - boost 1.59.*
    # On OSX Davis has forced building the static version
    # On Windows there is a conflict between this jpeg and windows.h
-   - jpeg 8d  # [linux]
-   - libpng 1.6.17
-   - sqlite 3.8.4.1  # [unix]
+   - jpeg            # [linux]
+   - libpng 1.6.*
+   - sqlite 3.*      # [unix]
 
   run:
    - python
+   - numpy >=1.10
    - boost 1.59.*
-   - jpeg 8d  # [linux]
-   - libpng 1.6.17
-   - sqlite 3.8.4.1  # [unix]
+   - jpeg            # [linux]
+   - libpng 1.6.*
+   - sqlite 3.*      # [unix]
 
 test:
   requires:
-    - numpy
     - pillow
 
   imports:
