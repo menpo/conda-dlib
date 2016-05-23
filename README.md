@@ -15,8 +15,8 @@ The following dlib functionality is **disabled** for the automated builds:
   - SSE4 for 32-bit builds
   - AVX
   - GUI support
-  - BLAS
-  - LAPACK
+  - BLAS on Windows (otherwise MKL is assumed via Anaconda numpy)
+  - LAPACK on Windows (otherwise MKL is assumed via Anaconda numpy)
 
 This functionality is disabled in order to attempt to increase the probability that the automated builds will be useful for as large a range of people as possible.
 
@@ -25,7 +25,7 @@ If the lack of this functionality is impeding you, please attempt to build the p
 ```
 $ conda install conda-build
 $ git clone https://github.com/menpo/conda-dlib
-$ cd conda-dlib 
+$ cd conda-dlib
 $ conda config --add channels menpo
 $ conda build conda/
 $ conda install /PATH/TO/DLIB/PACKAGE.tar.gz
