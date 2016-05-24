@@ -6,12 +6,10 @@ environment:
     BINSTAR_KEY:
       secure: tsajM8eklrwmWI6OdAEKi3FMqIUXUCHS45rPJZ3bwO25PRWi5onvLdsNMk+8vYRS
   matrix:
-    - PYTHON_VERSION: 2.7
-    - PYTHON_VERSION: 3.4
     - PYTHON_VERSION: 3.5
 
 matrix:
-  fast_finish: true
+  fast_finish: false
 
 platform:
 - x86
@@ -35,6 +33,9 @@ install:
 - cmd: "FOR /F %%i IN (' %tmp_cmd% ') DO SET APPV_MINICONDA_DIR=%%i"
 - cmd: set APPV_MINICONDA_EXE="%APPV_MINICONDA_DIR%\python.exe"
 - cmd: "%APPV_MINICONDA_EXE% C:\\condaci.py build conda"
+
+on_finish:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 notifications:
   - provider: Slack
