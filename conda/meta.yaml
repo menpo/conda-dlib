@@ -1,40 +1,51 @@
+{% set name = "dlib" %}
+{% set version = "19.4" %}
+
 package:
-  name: dlib
-  version: "18.18"
+  name: {{ name }}
+  version: {{ version }}
 
 source:
-  fn: dlib-18.18.tar.bz2
-  url: http://sourceforge.net/projects/dclib/files/dlib/v18.18/dlib-18.18.tar.bz2/download
-  sha1: 21421b55e22387dfa428a221653172bf740b55ed
+  url: https://github.com/davisking/{{ name }}/archive/v{{ version }}.tar.gz
+  sha256: 2bed9669f1a5c436579498d0806b27a9b60c42a975a9b6e67b594b40f58b1a88
 
   patches:
-    - cmake_static_boost.patch  # [win]
+    - osx_jpeg.patch           # [osx]
+    - win_boost.patch
+    - win_png.patch            # [win]
+    - win_jpeg.patch           # [win]
+    - win_release_flags.patch  # [win]
 
 build:
-  number: 2
+  skip: True                   # [win and py<35]
+  number: 0
 
 requirements:
   build:
    - python
    - cmake
-   - numpy >=1.10
+   - numpy
    - boost 1.59.*
-   # On OSX Davis has forced building the static version
-   # On Windows there is a conflict between this jpeg and windows.h
-   - jpeg            # [linux]
-   - libpng 1.6.*
-   - sqlite 3.*      # [unix]
+   - jpeg 9*                      # [not win]
+   - libpng
+   - sqlite 3.13.*                # [not win]
 
   run:
    - python
-   - numpy >=1.10
+   - numpy
    - boost 1.59.*
-   - jpeg            # [linux]
-   - libpng 1.6.*
-   - sqlite 3.*      # [unix]
+   - jpeg 9*                      # [not win]
+   - libpng
+   - sqlite 3.13.*                # [not win]
 
 test:
+  files:
+    - test_data/face.jpg
+    - test_data/face.png
+    - test_data/images.xml
+
   requires:
+    - tqdm
     - pillow
 
   imports:
@@ -42,4 +53,6 @@ test:
 
 about:
   home: http://dlib.net/
-  license: Boost Software License
+  license: Boost 1.0
+  license_file: dlib/LICENSE.txt
+  summary: Modern C++ toolkit containing machine learning algorithms with Python bindings
