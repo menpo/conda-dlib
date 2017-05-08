@@ -6,6 +6,7 @@ environment:
     BINSTAR_KEY:
       secure: fyETJrtllCxpbmu5FLz5KVnRW1qLEfSmZa5GVSIzoWEPejhD/a2kWdhbhRYj1rTj
   matrix:
+    - PYTHON_VERSION: 2.7
     - PYTHON_VERSION: 3.5
     - PYTHON_VERSION: 3.6
 
@@ -19,5 +20,4 @@ init:
 
 install:
   - ps: $env:MINICONDA_DIR = python C:\\condaci.py miniconda_dir
-  - ps: $BUILD_CMD = "${env:MINICONDA_DIR}" + "\\python C:\\condaci.py build conda"; Invoke-Expression $BUILD_CMD
-
+  - cmd: "%MINICONDA_DIR%\\python C:\\condaci.py build conda"
