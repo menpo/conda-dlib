@@ -9,7 +9,7 @@ if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   DYNAMIC_EXT="so"
 fi
 if [ "$(uname -s)" == "Darwin" ]; then
-export MACOSX_VERSION_MIN="10.9"
+  export MACOSX_VERSION_MIN="10.9"
   export MACOSX_DEPLOYMENT_TARGET="${MACOSX_VERSION_MIN}"
   export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_VERSION_MIN}"
   export CFLAGS="${CFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
