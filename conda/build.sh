@@ -10,13 +10,19 @@ if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   export CFLAGS="$CFLAGS -fPIC $CMAKE_ARCH"
   export LDFLAGS="$LDFLAGS $CMAKE_ARCH"
   DYNAMIC_EXT="so"
-  EXTRA_FLAGS=""
   DLIB_JPEG="-DJPEG_INCLUDE_DIR=${INCLUDE_PATH} -DJPEG_LIBRARY=${LIBRARY_PATH}/libjpeg.${DYNAMIC_EXT}"
 fi
 if [ "$(uname -s)" == "Darwin" ]; then
   DLIB_JPEG=""
   DYNAMIC_EXT="dylib"
-  EXTRA_FLAGS="-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}"
+  export MACOSX_VERSION_MIN="10.9"
+  export MACOSX_DEPLOYMENT_TARGET="${MACOSX_VERSION_MIN}"
+  export CMAKE_OSX_DEPLOYMENT_TARGET="${MACOSX_VERSION_MIN}"
+  export CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
+  export CXXFLAGS="${CXXFLAGS} -stdlib=libc++"
+  export LDFLAGS="${LDFLAGS} -headerpad_max_install_names"
+  export LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
+  export LDFLAGS="${LDFLAGS} -lc++"
 fi
 
 if [ $PY3K -eq 1 ]; then
@@ -58,7 +64,7 @@ ${DLIB_JPEG} \
 -DUSE_SSE2_INSTRUCTIONS=1 \
 -DUSE_SSE4_INSTRUCTIONS=$USE_SSE4 \
 -DDLIB_USE_BLAS=0 \
--DDLIB_USE_LAPACK=0 ${EXTRA_FLAGS}
+-DDLIB_USE_LAPACK=0
 # Use the conda build in the mkl folder for BLAS
 
 # On Travis, due to the heavy template expansion, we need
